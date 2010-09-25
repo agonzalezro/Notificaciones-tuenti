@@ -1,0 +1,19 @@
+{
+  "name": "Notificaciones tuenti",
+  "version": "0.1",
+  "description": "Te muestra una notificación si tienes un nuevo mensaje privado o un nuevo mensaje en el muro.",
+  "background_page": "background.html",
+  "icons": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+  },
+  "browser_action": {
+    "default_icon": "icon16.png",
+    "popup": "popup.html"
+  },
+  "permissions": [
+    "http://m.tuenti.com/",
+    "notifications"
+  ]
+}
