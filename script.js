@@ -34,32 +34,38 @@ function get_wall_posts(response) {
     return wall_posts;
 }
 
+function is_connected(response) {
+    if (response.match("process_login") == null)
+        return true
+    return false
+}
+
 
 function get_content(messages, wall_posts, plain) {
     //Format messages
     if (messages == 1) { messages = "1 mensaje privado"; }
     else if (messages > 1) { messages = messages + " mensajes privados"; }
-    else { messages = null; }
-    if (messages != null && plain != true) messages = "<a target='_blank' href='http://www.tuenti.com/#m=Message&func=index'>" + messages + "</a>"; 
+    else { messages = 0; }
+    if (messages != 0 && plain != true) messages = "<a target='_blank' href='http://www.tuenti.com/#m=Message&func=index'>" + messages + "</a>"; 
 
     //Format wall posts
     if (wall_posts == 1) { wall_posts = "1 comentario"; }
     else if (wall_posts > 1) { wall_posts = wall_posts + " comentarios"; }
-    else { wall_posts = null; }
-    if (wall_posts != null && plain != true) wall_posts = "<a target='_blank' href='http://www.tuenti.com/#m=Profile&func=index'>" + wall_posts + "</a>";
+    else { wall_posts = 0; }
+    if (wall_posts != 0 && plain != true) wall_posts = "<a target='_blank' href='http://www.tuenti.com/#m=Profile&func=index'>" + wall_posts + "</a>";
 
     if (plain) {
         //Format both
-        if (messages != null && wall_posts != null) { innerHTML = messages + " y " + wall_posts; }
-        else if (messages != null && wall_posts == null) { innerHTML = messages; }
-        else if (messages == null && wall_posts != null) { innerHTML = wall_posts; }
-        else { return null; }
+        if (messages != 0 && wall_posts != 0) { innerHTML = messages + " y " + wall_posts; }
+        else if (messages != 0 && wall_posts == 0) { innerHTML = messages; }
+        else if (messages == 0 && wall_posts != 0) { innerHTML = wall_posts; }
+        else { return 0; }
     } else {
         //Format both
-        if (messages != null && wall_posts != null) { innerHTML = messages + "<br/>" + wall_posts; }
-        else if (messages != null && wall_posts == null) { innerHTML = messages; }
-        else if (messages == null && wall_posts != null) { innerHTML = wall_posts; }
-        else { innerHTML = "No hay notificaciones o no est&aacute;s conectado a <a target='_blank' href='http://m.tuenti.com'>m.tuenti.com</a>"; }
+        if (messages != 0 && wall_posts != 0) { innerHTML = messages + "<br/>" + wall_posts; }
+        else if (messages != 0 && wall_posts == 0) { innerHTML = messages; }
+        else if (messages == 0 && wall_posts != 0) { innerHTML = wall_posts; }
+        else { innerHTML = "No hay notificaciones pendientes"; }
     }
 
     return innerHTML;
@@ -74,7 +80,11 @@ function show_popup(response) {
     messages = get_messages(response);
     wall_posts = get_wall_posts(response);
 
-    innerHTML = get_content(messages, wall_posts, false);
+    if (is_connected(response)) {
+        innerHTML = get_content(messages, wall_posts, false);
+    } else {
+        innerHTML = "No est&aacute;s conectado a <a target='_blank' href='http://m.tuenti.com'>m.tuenti.com</a>";
+    }
 
     document.getElementById("notifications").innerHTML = innerHTML;
 }
