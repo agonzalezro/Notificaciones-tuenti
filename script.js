@@ -96,11 +96,17 @@ function show_notification(response) {
 
 
     if ((messages != null) || (wall_post != null)) {
-        webkitNotifications.createNotification(
+        wkn = webkitNotifications.createNotification(
           'icon48.png',
           'Tienes nuevas notificaciones',
           get_content(messages, wall_posts, true)
-        ).show();
+        );
+
+        wkn.ondisplay = function() {
+            setTimeout(function() { wkn.cancel(); }, 5000);
+        };
+
+        wkn.show();
     }
 }
 
